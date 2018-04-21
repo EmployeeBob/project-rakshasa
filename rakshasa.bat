@@ -12,6 +12,7 @@ echo If this is the Batch (.bat) version: Run this application as administrator.
 echo If this is an executable installer file (.exe): Leave it as it is.
 echo WARNING: What the user does with this program is their own decision.
 echo.
+pause
 goto :commands
 
 :help
@@ -29,6 +30,7 @@ echo 'rerun' - rerun this application
 echo 'userlogin' - find a user's password
 echo 'users' - the list of all users
 echo.
+pause
 goto :commands
 
 :commands
