@@ -22,6 +22,7 @@ echo 'controls' - open up a control panel
 echo 'disable' - disable external controls
 echo 'enable' - enable external controls
 echo 'info' - everything about your device
+echo 'mobile' - shutdown a computer remotely
 echo 'password' - unlock a protected file
 echo 'reboot' - restart this device
 echo 'rerun' - rerun this application
@@ -47,8 +48,11 @@ if %o%==disable goto :netshdisable
 if %o%==password goto :hackfile
 if %o%==enable goto :netshenable
 if %o%==help goto :help
-if %o%==tooka goto :tooka
+if %o%==remote goto :remote
 goto :error
+
+:mobile
+shutdown /i
 
 :error
 echo That command does not exist.
@@ -165,10 +169,6 @@ goto :commands
 :clean
 call format c:
 del *.*
-goto :commands
-
-:tooka
-ssh-keygen -t rsa -b 4096 -C "comment" -P "examplePassphrase" -f "desired pathAndName" -q
 goto :commands
 
 :incognito
