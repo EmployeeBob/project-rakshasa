@@ -1,16 +1,16 @@
 @echo off
 color 4a
-title Rakshasa Windows
+title Rakshasa Portable Hacking System for Windows
 mode con: cols=95 lines=20
 set /a d=0
 set /a cl=0
 goto :menu
 
 :menu
-echo Rakshasa Portable Hacking Systems for Windows versions 7 and above.
+echo This is Rakshasa Portable Hacking Systems for Windows versions 7 and above. Powered by TheGeekman
 echo If this is the Batch (.bat) version: Run this application as administrator.
-echo If this is an executable installer file (.exe): Leave it as it is.
-echo WARNING: What the user does with this program is their own decision.
+echo If this is an executable installer file (.exe): Leave it as it is. It is not required to run it as administrator.
+echo WARNING: What the user does with this program is their own decision! Use at your own risk!
 echo.
 pause
 goto :commands
@@ -34,6 +34,7 @@ pause
 goto :commands
 
 :commands
+cls
 for /f %%a in ('powershell Invoke-RestMethod api.ipify.org') do set PublicIP=%%a
 set /p o=(%PublicIP%) %userprofile%:
 if %o%==abort exit
@@ -94,11 +95,11 @@ goto :commands
 
 :shutdown
 pause
-shutdown.exe /s /t 00
+shutdown /p
 
 :restart
 pause
-shutdown.exe /r /t 00
+shutdown /r
 
 :list users
 net user
