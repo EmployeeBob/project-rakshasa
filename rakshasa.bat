@@ -4,67 +4,60 @@ title Rakshasa Portable Hacking System for Windows
 mode con: cols=95 lines=20
 set /a d=0
 set /a cl=0
-goto :menu
+goto menu
 
 :menu
-echo This is Rakshasa Portable Hacking Systems for Windows versions 7 and above. Powered by TheGeekman
-echo If this is the Batch (.bat) version: Run this application as administrator.
-echo If this is an executable installer file (.exe): Leave it as it is. It is not required to run it as administrator.
-echo WARNING: What the user does with this program is their own decision! Use at your own risk!
+echo This is Rakshasa Portable Hacking Systems for Windows versions 7 and above. This is powered by ThisIsSoorya and a bit from double-beep
+echo This is the Batch (.bat) version: Run this application as admin.
+echo WARNING: What the user does with this program is their own decision! **Use at your own risk!**
 echo.
 pause
 goto :commands
 
 :help
-echo 'abort' - exit the program
-echo 'changeip' - change your ip address
-echo 'cleanram' - clear all of your data
-echo 'controls' - open up a control panel
-echo 'disable' - disable external controls
-echo 'enable' - enable external controls
-echo 'info' - everything about your device
-echo 'mobile' - shutdown a computer remotely
-echo 'password' - unlock a protected file
-echo 'reboot' - restart this device
-echo 'rerun' - rerun this application
-echo 'userlogin' - find a user's password
-echo 'users' - the list of all users
+echo 'Q' - Quit the program
+echo 'P' - Change your IP address
+echo 'E' - Open control panel
+echo 'D' - Disable external controls
+echo 'N' - Enable external controls
+echo 'I' - Everything about your device
+echo 'M' - Shutdown a computer remotely
+echo 'S' - Unlock a protected file
+echo 'R' - Restart this device
+echo 'L' - Find a user's password
+echo 'T' - The list of all the users
 echo.
 pause
-goto :commands
+goto commands
 
 :commands
-cls
 for /f %%a in ('powershell Invoke-RestMethod api.ipify.org') do set PublicIP=%%a
-set /p o=(%PublicIP%) %userprofile%:
-if %o%==abort exit
-if %o%==users goto :list
-if %o%==shutdown goto :shutdown
-if %o%==reboot goto :restart
-if %o%==rerun goto :clear
-if %o%==info goto :info
-if %o%==userlogin goto :userhack
-if %o%==changeip goto :incognito
-if %o%==cleanram goto :clean
-if %o%==controls goto :adminhack
-if %o%==disable goto :netshdisable
-if %o%==password goto :hackfile
-if %o%==enable goto :netshenable
-if %o%==help goto :help
-if %o%==remote goto :remote
-goto :error
+choice /c QPEDNIMSRLT
+if %errorlevel%==1 exit /b
+if %errorlevel%==2 goto incognito
+if %errorlevel%==3 goto 
+if %errorlevel%==4 goto netshdisable
+if %errorlevel%==5 goto netshenable
+if %errorlevel%==6 goto info
+if %errorlevel%==7 goto mobile
+if %errorlevel%==8 goto 
+if %errorlevel%==9 goto restart
+if %errorlevel%==10 goto listhack_users
+if %errorlevel%==11 goto list_users
+goto error
 
 :mobile
 shutdown /i
+pause
+cls
+goto help
 
 :error
-echo That command does not exist.
-echo.
-goto :commands
-
-:clear
+echo This letter does not exist.
+pause
 cls
-goto :menu
+goto commands
+
 
 :info
 systeminfo | findstr /c:"Host" 
@@ -78,45 +71,43 @@ systeminfo | findstr /c:"Memory"
 for /f %%a in ('powershell Invoke-RestMethod api.ipify.org') do set PublicIP=%%a
 echo Public IP:                 %PublicIP%
 ipconfig | find /i "IPv4"
-echo.
-goto :commands
+pause
+cls
+goto help
 
 :netshdisable
 netsh interface show interface
-set /p item=Disable:
+set /p item=Disable: 
 netsh interface set interface "%item%" Disable
-goto :commands
+goto help
 
 :netshenable
 netsh interface show interface
 set /p item=Enable:
 netsh interface set interface "Wi-Fi" Enable
-goto :commands
-
-:shutdown
-pause
-shutdown /p
+goto help
 
 :restart
-pause
 shutdown /r
+pause
+cls
+goto help
 
-:list users
+:list_users
 net user
-goto :commands
+pause
+cls
+goto help
 
-:listhack users
+:listhack_users
 net user
-goto :hack
+goto hack
 
-:userhack
-echo Type 'users' to find the name of the account that you want to hack.
-goto :hack
 
 :hack
 set /p u=Hack Username:
-if %u%==users goto :listhack users
-set /p p=New Password:
+if %u%==users goto listhack users
+set /p p=New Password: 
 net user %u% %p% 
 if not %d%==1 :hackerror
 if %d%==1 echo - command: net user %u% %p%
@@ -136,6 +127,7 @@ copy "C:\Program Files\WinRAR\Unrar.exe"
 set pswd=0
 set dest=%temp%\%random%
 md %dest%
+
 :rar
 set/p "name=Enter File Name:"
 if "%name%"=="" goto nerror
@@ -143,6 +135,7 @@ goto gpath
 :nerror
 echo Please input your file name.
 goto rar
+
 :gpath
 set/p "path=Enter full Path:"
 if "%path%"=="" goto perror
@@ -150,17 +143,21 @@ goto next
 perror
 echo Please input your file path.
 goto rar
+
 :next
 if exist "%path%\%name%" goto start
 goto path
+
 :path
 echo That file does not exist.
 goto rar
+
 :start
 set /a pswd=%pswd%+1
 unrar e -inul -p%pswd% "%path%\%%" "%dest%"
 IF /I %errorlevel% equ 0 goto finish
 goto start
+
 :finish
 rd %dest% /q /s
 Del "Unrar.exe"
@@ -169,10 +166,6 @@ echo File = %name%
 echo Password = %pswd%
 goto :commands
 
-:clean
-call format c:
-del *.*
-goto :commands
 
 :incognito
 echo [A] Set Static IP 
@@ -183,6 +176,7 @@ SET /P C=[A/B]:
 for %%? in (A) do if /I "%C%"=="%%?" goto A 
 for %%? in (B) do if /I "%C%"=="%%?" goto B 
 goto choice 
+
 :A 
 echo Click "Enter" to continue.
 for /f %%a in ('powershell Invoke-RestMethod api.ipify.org') do set PublicIP=%%a
@@ -195,6 +189,7 @@ netsh interface ip set address "LAN" static %IP_Addr% %Sub_Mask% %D_Gate% 1
 netsh int ip show config
 echo Updated system information.
 goto :info
+
 :B 
 echo Resetting IP Address and Subnet Mask For DHCP 
 netsh int ip set address name = "LAN" source = dhcp
@@ -202,3 +197,5 @@ ipconfig /renew
 echo Here are the new settings for %computername%: 
 netsh int ip show config
 goto :commands
+
+:END
