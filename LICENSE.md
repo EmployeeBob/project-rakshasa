@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2018 ThisIsSoorya
+Copyright (c) 2018 [ThisIsSoorya](https://github.com/ThisIsSoorya) and [double-beep](https://github.com/double-beep)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
