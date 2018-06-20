@@ -1,18 +1,13 @@
 @echo off
-color 4a
+color 1a
 title Rakshasa Portable Hacking System for Windows
-mode con: cols=95 lines=20
 set /a d=0
 set /a cl=0
-goto menu
-
-:menu
 echo This is Rakshasa Portable Hacking Systems for Windows versions 7 and above. This is powered by ThisIsSoorya and a bit from double-beep
 echo This is the Batch (.bat) version: Run this application as admin.
 echo WARNING: What the user does with this program is their own decision! **Use at your own risk!**
 echo.
 pause
-goto :commands
 
 :help
 echo 'Q' - Quit the program
@@ -27,8 +22,6 @@ echo 'R' - Restart this device
 echo 'L' - Find a user's password
 echo 'T' - The list of all the users
 echo.
-pause
-goto commands
 
 :commands
 for /f %%a in ('powershell Invoke-RestMethod api.ipify.org') do set PublicIP=%%a
@@ -44,6 +37,8 @@ if %errorlevel%==8 goto
 if %errorlevel%==9 goto restart
 if %errorlevel%==10 goto listhack_users
 if %errorlevel%==11 goto list_users
+
+) else (
 goto error
 
 :mobile
@@ -53,10 +48,10 @@ cls
 goto help
 
 :error
-echo This letter does not exist.
+echo This option does not exist. Please check main menu once again!
 pause
 cls
-goto commands
+goto help
 
 
 :info
@@ -113,14 +108,14 @@ if not %d%==1 :hackerror
 if %d%==1 echo - command: net user %u% %p%
 echo Command is being processed.
 pause
-goto :menu
+goto menu
 
 :adminhack
 cd %userprofile%\Downloads
 md rakshasa.{ED7BA470-8E54-465E-825C-99712043E01C}
 start rakshasa.{ED7BA470-8E54-465E-825C-99712043E01C}
 echo.
-goto :commands
+goto commands
 
 :hackfile
 copy "C:\Program Files\WinRAR\Unrar.exe"
@@ -132,20 +127,26 @@ md %dest%
 set/p "name=Enter File Name:"
 if "%name%"=="" goto nerror
 goto gpath
+
 :nerror
 echo Please input your file name.
+pause
+cls
 goto rar
 
 :gpath
 set/p "path=Enter full Path:"
 if "%path%"=="" goto perror
 goto next
-perror
+
+:perror
 echo Please input your file path.
-goto rar
+goto gpath
 
 :next
 if exist "%path%\%name%" goto start
+
+) else (
 goto path
 
 :path
@@ -171,10 +172,13 @@ goto :commands
 echo [A] Set Static IP 
 echo [B] Set DHCP 
 echo. 
+
 :choice 
-SET /P C=[A/B]:
-for %%? in (A) do if /I "%C%"=="%%?" goto A 
-for %%? in (B) do if /I "%C%"=="%%?" goto B 
+choice /c AB>nul
+if %errorlevel%==1 goto A
+if %errorlevel%==2 goto B
+) else (
+echo Selection does not exist!
 goto choice 
 
 :A 
@@ -188,7 +192,7 @@ set /p Sub_Mask=
 netsh interface ip set address "LAN" static %IP_Addr% %Sub_Mask% %D_Gate% 1 
 netsh int ip show config
 echo Updated system information.
-goto :info
+goto info
 
 :B 
 echo Resetting IP Address and Subnet Mask For DHCP 
@@ -196,6 +200,6 @@ netsh int ip set address name = "LAN" source = dhcp
 ipconfig /renew
 echo Here are the new settings for %computername%: 
 netsh int ip show config
-goto :commands
+goto commands
 
 :END
