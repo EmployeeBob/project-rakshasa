@@ -3,7 +3,7 @@ color 1a
 title Rakshasa Portable Hacking System for Windows
 set /a d=0
 set /a cl=0
-echo This is Rakshasa Portable Hacking Systems for Windows versions 7 and above. This is powered by ThisIsSoorya and a bit from double-beep
+echo This is Rakshasa Portable Hacking Systems for Windows versions 7 and above. Free-use code by hoboguy.
 echo This is the Batch (.bat) version: Run this application as admin.
 echo WARNING: What the user does with this program is their own decision! **Use at your own risk!**
 echo.
