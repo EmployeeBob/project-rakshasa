@@ -1,2 +1,2 @@
-# hacker.bat
-A basic Batchfile hacker for Windows 7 and up. VERSION 3.6
+# project rakshasa
+dude, just run the code
